@@ -1,0 +1,67 @@
+  customer service desk :   database: cust_service_desk
+           step 1`:
+                         create database cust_service_desk;
+                         use cust_service_desk;
+           step 2:
+                        CREATE TABLE cust_master (
+                                      cust_id INT NOT NULL AUTO_INCREMENT,
+                                      cust_name VARCHAR(45) NOT NULL,
+                                      cust_phno BIGINT(10) NOT NULL,
+                                      cust_photo BLOB NOT NULL,
+                                      cust_dob DATE NOT NULL,
+                                      cust_email VARCHAR(45) NOT NULL,
+                                      cust_addr VARCHAR(225) NOT NULL,
+                                      cust_uname VARCHAR(45) NOT NULL,
+                                      cust_pass VARCHAR(45) NOT NULL,
+                                      PRIMARY KEY (cust_id),
+                                      UNIQUE INDEX cust_email_UNIQUE (cust_email ASC) VISIBLE,
+                                      UNIQUE INDEX cust_uname_UNIQUE (cust_uname ASC) VISIBLE,
+                                      UNIQUE INDEX cust_pass_UNIQUE (cust_pass ASC) VISIBLE);
+
+
+      step 3:
+            CREATE TABLE cust_comp_reg (
+             cust_comp_reg_id INT NOT NULL AUTO_INCREMENT,
+             comp_date DATE NOT NULL,
+             text_of_comp VARCHAR(225) NOT NULL,
+             cust_id INT NOT NULL,
+             ser_cust_dom_id INT NOT NULL,
+             PRIMARY KEY (cust_comp_reg_id),
+             FOREIGN KEY ( cust_id) REFERENCES cust_master(cust_id),
+             FOREIGN KEY ( ser_cust_dom_id) REFERENCES ser_cust_domain(ser_cust_dom_id)
+             );
+       step 4:
+              CREATE TABLE cust_feedback_master (
+                              feedback_id  INT NOT NULL AUTO_INCREMENT,
+                              feedback_date  DATE NOT NULL,
+                              feedback_text  VARCHAR(225) NOT NULL,
+                              email_id  VARCHAR(60) NOT NULL,
+                              cust_id int,
+                              cust_comp_reg_id INT,
+                              PRIMARY KEY (feedback_id),
+                              FOREIGN KEY ( cust_id) REFERENCES cust_master( cust_id),
+                              FOREIGN KEY ( cust_comp_reg_id) REFERENCES cust_comp_reg( cust_comp_reg_id)
+                              );
+      step 5:
+             CREATE TABLE service_cust (
+                  ser_cust_id INT NOT NULL AUTO_INCREMENT,
+                  ser_cust_name VARCHAR(45) NOT NULL,
+                  ser_cust_dor DATE NOT NULL,
+                  ser_cust_addr VARCHAR(255) NOT NULL,
+                  ser_cust_phno BIGINT(10) NOT NULL,
+                  ser_cust_email VARCHAR(55) NOT NULL,
+                  cust_id INT ,
+                  PRIMARY KEY (ser_cust_id),
+                  FOREIGN KEY ( cust_id) REFERENCES cust_master(cust_id)
+             );
+      step 6:
+            CREATE TABLE ser_cust_domain (
+              ser_cust_dom_id INT NOT NULL AUTO_INCREMENT,
+              ser_cust_dom_phno BIGINT(10) NOT NULL,
+              ser_cust_dom_name VARCHAR(45) NOT NULL,
+              ser_cust_dom_email VARCHAR(65) NOT NULL,
+              ser_cust_dom_addr VARCHAR(245) NOT NULL,
+              ser_cust_id INT NOT NULL,
+              PRIMARY KEY (ser_cust_dom_id),
+              FOREIGN KEY ( ser_cust_id) REFERENCES service_cust(ser_cust_id)
+            );
